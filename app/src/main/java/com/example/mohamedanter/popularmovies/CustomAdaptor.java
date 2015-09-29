@@ -1,56 +1,45 @@
 package com.example.mohamedanter.popularmovies;
 
 import android.content.Context;
-import android.util.Log;
+import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 /**
  * Created by Mohamed Anter on 8/22/2015.
  */
-public class CustomAdaptor extends BaseAdapter {
+public class CustomAdaptor extends CursorAdapter {
+    ViewHolder holder = null;
 
-    Context context;
-    ArrayList<Movie> mydata ;
-    LayoutInflater inflater ;
-    public CustomAdaptor (Context context, ArrayList<Movie>mydata )
-    {
-        this.context=context;
-        this.mydata=mydata;
-        inflater=LayoutInflater.from(context);
+    public CustomAdaptor(Context context, Cursor c, int flags) {
+        super(context, c, flags);
     }
 
     @Override
-    public int getCount() {
-        return mydata.size();
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        view.setTag(viewHolder);
+        return view;
     }
 
     @Override
-    public Object getItem(int position) {
-        return mydata.get(position);
+    public void bindView(View view, Context context, Cursor cursor) {
+        holder = (ViewHolder) view.getTag();
+        String x = cursor.getString(PlaceholderFragment.COL_POSTER_PATH);
+        Picasso.with(context).load("http://image.tmdb.org/t/p/w185" + cursor.getString(PlaceholderFragment.COL_POSTER_PATH)).into(holder.PosterView);
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+    public static class ViewHolder {
+        private ImageView PosterView;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final String LOG_TAG = ParseJSONstr.class.getSimpleName();
-        View vi = convertView;
-        if(vi==null)
-            vi=inflater.inflate(R.layout.item,null);
-        ImageView img=(ImageView)vi.findViewById(R.id.image);
-        Picasso.with(context).load("http://image.tmdb.org/t/p/w185//"+mydata.get(position).poster_path).into(img);
-        Log.v(LOG_TAG, "1111111111111/////////////////////////////////////////" + mydata.get(position).popularity);
-        Log.v(LOG_TAG, "1111111111111/////////////////////////////////////////" + mydata.get(position).vote_average);
-        return vi;
+        public ViewHolder(View view) {
+            PosterView = (ImageView) view.findViewById(R.id.image);
+        }
     }
 }

@@ -1,48 +1,68 @@
 package com.example.mohamedanter.popularmovies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements PlaceholderFragment.Callback {
+    private static String DETAIL_TAG = "D_Tag";
+    private boolean mTwoPan;
+    private String mSort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
+        if (findViewById(R.id.detail_container) != null) {
+            mTwoPan = true;
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.detail_container, new DetailFragment(), DETAIL_TAG)
+                        .commit();
+            }
+        } else {
+            mTwoPan = false;
+        }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSort = prefs.getString(getString(R.string.pref_selection_key),
+                getString(R.string.pref_selection_default));
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String Sort = prefs.getString(getString(R.string.pref_selection_key),
+                getString(R.string.pref_selection_default));
+        if (Sort != null && !Sort.equals(mSort)) {
+            PlaceholderFragment PlaceHolder_F = (PlaceholderFragment) getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (null != PlaceHolder_F) {
+                PlaceHolder_F.ChangeSelection();
+            }
+            DetailFragment Detail_F = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAIL_TAG);
+            if (null != Detail_F) {
+                Detail_F.ChangeMovies();
+            }
+            mSort = Sort;
+        }
+    }
+    @Override
+    public void onItemSelected(Uri contentUri) {
+        if (mTwoPan) {
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.DETAIL_URI, contentUri);
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .replace(R.id.detail_container, fragment, DETAIL_TAG)
                     .commit();
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class)
+                    .setData(contentUri);
+            startActivity(intent);
         }
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
 }
