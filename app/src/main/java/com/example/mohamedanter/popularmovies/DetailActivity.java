@@ -2,6 +2,7 @@ package com.example.mohamedanter.popularmovies;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+
 public class DetailActivity extends ActionBarActivity {
 
     @Override
@@ -18,5 +19,4 @@ public class DetailActivity extends ActionBarActivity {
                     .commit();
         }
     }
-    
 }
