@@ -247,7 +247,6 @@ public class MovieProvider extends ContentProvider {
             default:
                 return super.bulkInsert(uri, values);
         }
-
     }
 
     @Override

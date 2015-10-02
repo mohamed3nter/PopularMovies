@@ -15,10 +15,13 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
     public MovieDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
         final String SQL_CREATE_POPULAR_MOVIES_TABLE = "CREATE TABLE " + MovieContract.PopularMoviesEntry.TABLE_NAME + " (" +
                 MovieContract.PopularMoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MovieContract.COLUMN_MOVIE_ID + " LONG NOT NULL, " +
@@ -26,9 +29,12 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MovieContract.COLUMN_ORIGINAL_TITLE + " TEXT NOT NULL, " +
                 MovieContract.COLUMN_OVERVIEW + " TEXT NOT NULL, " +
                 MovieContract.COLUMN_VOTE_COUNT + " LONG NOT NULL, " +
-                MovieContract.COLUMN_VOTE_AVARAGE + " DOUBLE NOT NULL, " +
+                MovieContract.COLUMN_VOTE_AVERAGE + " DOUBLE NOT NULL, " +
                 MovieContract.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
-                MovieContract.COLUMN_POSTER_PATH + " TEXT NOT NULL);";
+                MovieContract.COLUMN_POSTER_PATH + " TEXT NOT NULL, " +
+                MovieContract.COLUMN_Trailer_JSON_STR + " TEXT NOT NULL, " +
+                MovieContract.COLUMN_REVIEW_JSON_STR + " TEXT NOT NULL);";
+
         final String SQL_CREATE_HIGHEST_MOVIES_TABLE = "CREATE TABLE " + MovieContract.HighestMoviesEntry.TABLE_NAME + " (" +
                 MovieContract.PopularMoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MovieContract.COLUMN_MOVIE_ID + " LONG NOT NULL, " +
@@ -36,9 +42,12 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MovieContract.COLUMN_ORIGINAL_TITLE + " TEXT NOT NULL, " +
                 MovieContract.COLUMN_OVERVIEW + " TEXT NOT NULL, " +
                 MovieContract.COLUMN_VOTE_COUNT + " LONG NOT NULL, " +
-                MovieContract.COLUMN_VOTE_AVARAGE + " DOUBLE NOT NULL, " +
+                MovieContract.COLUMN_VOTE_AVERAGE + " DOUBLE NOT NULL, " +
                 MovieContract.COLUMN_RELEASE_DATE + " TEXT NOT NULL, " +
-                MovieContract.COLUMN_POSTER_PATH + " TEXT NOT NULL);";
+                MovieContract.COLUMN_POSTER_PATH + " TEXT NOT NULL, " +
+                MovieContract.COLUMN_Trailer_JSON_STR + " TEXT NOT NULL, " +
+                MovieContract.COLUMN_REVIEW_JSON_STR + " TEXT NOT NULL);";
+
         db.execSQL(SQL_CREATE_POPULAR_MOVIES_TABLE);
         db.execSQL(SQL_CREATE_HIGHEST_MOVIES_TABLE);
     }
