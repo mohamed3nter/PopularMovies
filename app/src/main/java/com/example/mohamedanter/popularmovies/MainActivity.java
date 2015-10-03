@@ -31,6 +31,7 @@ public class MainActivity extends ActionBarActivity implements PlaceholderFragme
         mSort = prefs.getString(getString(R.string.pref_selection_key),
                 getString(R.string.pref_selection_default));
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -49,6 +50,7 @@ public class MainActivity extends ActionBarActivity implements PlaceholderFragme
             mSort = Sort;
         }
     }
+
     @Override
     public void onItemSelected(Uri contentUri) {
         if (mTwoPan) {

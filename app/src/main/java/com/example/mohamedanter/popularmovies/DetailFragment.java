@@ -61,6 +61,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (arguments != null) {
             mUri = arguments.getParcelable(DetailFragment.DETAIL_URI);
         }
+
         t1 = (TextView) rootView.findViewById(R.id.Movie_name);
         img = (ImageView) rootView.findViewById(R.id.image);
         t2 = (TextView) rootView.findViewById(R.id.Year);
@@ -108,6 +109,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
         if (null != mUri) {
             return new CursorLoader(
                     getActivity(),
@@ -178,7 +180,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
         return ReviewData;
     }
-
     private ArrayList<Trailer> getTrailerDataFromJson(String forecastJsonStr)
             throws JSONException {
         Log.d(LOG_TAG, "//////////////////////////////////////////////////" + forecastJsonStr);
